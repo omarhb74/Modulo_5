@@ -1,10 +1,14 @@
 from django.db import models
+from .validators import validarnocero
+from .validators import validarsologmail
+from django.core.validators import EmailValidator
+
+
 
 # Create your models here.
 
-from django.db import models
+################################### MODELOS ##################################
 
-# Create your models here.
 class Tipodispositivo(models.Model):
       nombre=models.CharField(max_length=255)
 
@@ -19,10 +23,10 @@ class Tipodispositivo(models.Model):
 class Dispositivo(models.Model):
     
     nombre=models.CharField(max_length=100)
-    ordendecompra=models.CharField(max_length=10)
+    ordendecompra=models.CharField(max_length=10,blank=False)
     descripcion=models.TextField(blank=True)
     fechavencimientogarantia=models.DateTimeField(null=True)
-    precio=models.DecimalField(decimal_places=2,max_digits=10,null=True)
+    precio=models.DecimalField(decimal_places=2,max_digits=10,null=True,validators=[validarnocero]) #CUSTOM VALIDATOR
     dispositivo=models.ForeignKey(Tipodispositivo,on_delete=models.CASCADE)
     
  
@@ -31,8 +35,9 @@ class Dispositivo(models.Model):
 class Usuario(models.Model):
     
     nombre=models.CharField(max_length=100)
-    cedula=models.TextField(blank=True)
-    fecharegistro=models.DateTimeField(null=True)
+    cedula=models.TextField(blank=False)
+    fecharegistro=models.DateTimeField(null=False)
+    email=models.EmailField(max_length=70,blank=True,validators=[validarsologmail])
     
 
     
